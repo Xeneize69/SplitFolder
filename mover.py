@@ -1,16 +1,19 @@
 import shutil
 import os
+# from pathlib import Path
 import catalogar
 
-def mover(subcarpetas):
+def mover(origen, subcarpetas):
     basepath = "C:/Users/hgazz/Downloads/Silop"
+    # basepath = Path("C:/Users/hgazz/Downloads/Silop")
     for i in subcarpetas:
         try:
             os.mkdir(os.path.join(basepath, i))
+            # Path.mkdir(basepath / i, exist_ok=True)
         except FileExistsError as exc:
             pass
 
-    for dirpath, dirnames, files in os.walk(catalogar.basepath):
+    for dirpath, dirnames, files in os.walk(origen):
         for names in files:
             if not os.path.isfile(os.path.join(dirpath, names)):
                 continue
@@ -26,4 +29,3 @@ def mover(subcarpetas):
                         except:
                             print(orig, dest)
                             raise
-
