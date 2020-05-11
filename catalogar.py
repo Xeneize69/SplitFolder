@@ -1,27 +1,36 @@
+""" Versión 2.0
+
+        No almacena cantidad de archivos que comienzan con cada caracter.
+        Cada subcarpeta se denomina con los x primeros caracteres del 
+        primer archivo y los x primeros del último.
+"""
+
 import os
 
-archivos = []
-empieza_con = []
-cantidad_por_letra = []
 cantidad_de_carpetas = 0
-basepath = "P:/Silop"
-total = 0
 
-def catalogar():
-    indice = -1
+def catalogar(basepath):
+    archivos = []
     subcarpeta = []
-    global archivos, empieza_con, cantidad_de_carpetas, cantidad_por_letra, basepath, total, empieza_con
+    global cantidad_de_carpetas
 
     for dirpath, dirnames, files in os.walk(basepath):
         for carp in dirnames:
             subcarpeta.append(carp)
             cantidad_de_carpetas += 1
-        total += len(files)
-        for file_name in sorted(files, key=str.lower):
-            # Chequear si la letra inicial cambió (mayúsculas = minúsculas)
-            if not empieza_con or empieza_con[indice].casefold() != file_name[0].casefold():
-                indice += 1
-                cantidad_por_letra.append(0)
-                empieza_con.append(file_name[0])
+        for file_name in files:
             archivos.append(file_name)
-            cantidad_por_letra[indice] += 1
+    return archivos
+
+# Versión más moderna, pero extremadamente lenta.
+
+def catalogar2(directorio):
+    global archivos, cantidad_de_carpetas
+
+    p = Path(directorio)
+    for nombre in p.iterdir():
+        if nombre.is_dir():
+            cantidad_de_carpetas += 1
+            catalogar2(nombre)
+        if nombre.is_file():
+            archivos.append(PurePath(nombre).name)

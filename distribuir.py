@@ -1,30 +1,50 @@
-import catalogar
+CANT_CARPETAS = 4
+LONG_NOMBRE = 6
 
-# Esta función crea las subcarpetas con los nombres en base al primer caracter del primero y último ficheros.
+def distribuir(archivos):
 
-def distribuir():
-    archivos_por_carpeta = catalogar.total // catalogar.cantidad_de_carpetas
-    contador_subcarpeta = 0
-    subca = []
+    archivos_por_carpeta = len(archivos) // CANT_CARPETAS
+    cont_subc = 0
     contador = 0
+    subca = [""] * CANT_CARPETAS
 
-    for i in range(catalogar.cantidad_de_carpetas):
-        subca.append("")
+    archivos.sort(key=str.lower)
 
-    for nombre in sorted(catalogar.archivos, key=str.lower):
-        if subca[contador_subcarpeta] == "":
-            if contador_subcarpeta == 0:
-                subca[contador_subcarpeta] = nombre[0].casefold()
+    for nombre in archivos:
+        if subca[cont_subc] == "":
+            if cont_subc == 0:
+                subca[cont_subc] = nombre[0].casefold()
             else:
-                # Si no es la primer subcarpeta, empezar con la letra siguiente.
-                subca[contador_subcarpeta] = chr(ord(nombre[0].casefold()) + 1)
+                subca[cont_subc] = chr(ord(nombre[0].casefold()) + 1)
         contador += 1
         if contador > archivos_por_carpeta:
-            subca[contador_subcarpeta] = subca[contador_subcarpeta] + "-" + nombre[0].casefold()
-            contador_subcarpeta += 1
+            subca[cont_subc] += "-" + nombre[0].casefold()
+            cont_subc += 1
             contador = 0
-    subca[contador_subcarpeta] = subca[contador_subcarpeta] + "-" + nombre[0].casefold()
+    subca[cont_subc] += "-" + nombre[0].casefold()
     return subca
 
+def distribuir2(archivos):
 
+    archivos_por_carpeta = len(archivos) // CANT_CARPETAS
+    cont_subc = 0
+    contador = 0
+    subca = [""] * CANT_CARPETAS
 
+    archivos.sort(key=str.lower)
+
+    for nombre in archivos:
+        if subca[cont_subc] == "":
+            if cont_subc > 0 and subca[cont_subc-1][-LONG_NOMBRE:] \
+                    == nombre[:LONG_NOMBRE]:
+                subca[cont_subc] = nombre[:LONG_NOMBRE+1]
+            else:
+                subca[cont_subc] = nombre[:LONG_NOMBRE]
+        contador += 1
+        if cont_subc < CANT_CARPETAS - 1 and \
+                contador > archivos_por_carpeta:
+            subca[cont_subc] += "-" + nombre[:LONG_NOMBRE]
+            cont_subc += 1
+            contador = 0
+    subca[cont_subc] += "-" + nombre[:LONG_NOMBRE]
+    return(subca)
