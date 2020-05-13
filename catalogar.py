@@ -21,16 +21,3 @@ def catalogar(basepath):
         for file_name in files:
             archivos.append(file_name)
     return archivos
-
-# Versión más moderna, pero extremadamente lenta.
-
-def catalogar2(directorio):
-    global archivos, cantidad_de_carpetas
-
-    p = Path(directorio)
-    for nombre in p.iterdir():
-        if nombre.is_dir():
-            cantidad_de_carpetas += 1
-            catalogar2(nombre)
-        if nombre.is_file():
-            archivos.append(PurePath(nombre).name)
