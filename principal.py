@@ -10,13 +10,14 @@ class Carpeta:
         self.ruta = PurePath(path)
 
     def existe(self):
-        return self.ruta.is_dir()
+        path = Path(self)
+        return path.is_dir()
 
 class Subcarpeta(Carpeta):
     """ Extiende Carpeta con funciones propias de las subcarpetas """
-
+    
     def from_file(self):    # Obtiene la cadena previa a "-" en subcarpetas
-        nombre = self.filename()
+        nombre = PurePath(self).name
         divisor = nombre.find("-")
         if divisor == -1:
             return None
@@ -24,7 +25,7 @@ class Subcarpeta(Carpeta):
             return nombre[:divisor]
 
     def to_file(self):      # Obtiene la cadena posterior a "-" en subcarpetas
-        nombre = self.filename()
+        nombre = PurePath(self).name
         divisor = nombre.find("-")
         if divisor == -1:
             return None
@@ -35,7 +36,7 @@ def main():
     pCloud = (Carpeta("P:/Silop"))
     archivos = catalogar.catalogar(pCloud)
     #mover.mover(basepath, distribuir.distribuir2)
-    print(distribuir.distribuir2(archivos))
+    print(distribuir.distribuir(archivos))
 
 if __name__ == "__main__":
     main()
