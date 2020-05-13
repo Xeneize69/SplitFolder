@@ -7,17 +7,13 @@
 
 import os
 
-cantidad_de_carpetas = 0
-
 def catalogar(basepath):
+    """" Obtiene todos los archivos de una carpeta y de sus subcarpetas.
+         Argumentos: Carpeta().ruta
+         Retorna: String archivos[] """
     archivos = []
-    subcarpeta = []
-    global cantidad_de_carpetas
 
     for dirpath, dirnames, files in os.walk(basepath):
-        for carp in dirnames:
-            subcarpeta.append(carp)
-            cantidad_de_carpetas += 1
         for file_name in files:
             archivos.append(file_name)
     return archivos

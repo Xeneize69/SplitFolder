@@ -10,7 +10,7 @@ def mover(origen, subcarpetas):
         try:
             os.mkdir(os.path.join(basepath, i))
             # Path.mkdir(basepath / i, exist_ok=True)
-        except FileExistsError as exc:
+        except:
             pass
 
     for dirpath, dirnames, files in os.walk(origen):

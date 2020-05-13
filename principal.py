@@ -25,17 +25,19 @@ class Subcarpeta(Carpeta):
 
     def to_file(self):      # Obtiene la cadena posterior a "-" en subcarpetas
         nombre = PurePath(self.ruta).name
-        divisor = nombre.find("-") + 1
+        divisor = nombre.find("-")
         if divisor == -1:
             return None
         else:
-            return nombre[divisor:]
+            return nombre[divisor+1:]
 
 def main():
     pCloud = Carpeta("P:/Silop")
-    archivos = catalogar.catalogar(pCloud)
-    #mover.mover(basepath, distribuir.distribuir2)
-    print(distribuir.distribuir(archivos))
+
+    if pCloud.existe():
+        archivos = catalogar.catalogar(pCloud.ruta)
+        # mover.mover(basepath, distribuir.distribuir)
+        print(distribuir.distribuir(archivos))
 
 if __name__ == "__main__":
     main()
